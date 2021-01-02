@@ -18,7 +18,7 @@ def file_extension(path):
     return os.path.splitext(path)[1] 
 
 def auto_rename(f):
-    print('file:',f)
+    print('file:',f, end="")
     hastime = False
     # 获取媒体信息
     info = p.get_json(f)
@@ -70,6 +70,11 @@ def auto_rename(f):
         timeStr = tz1_to_tz2(t, tf1, tf2, tz1, tz2)
         # 文件名 PHT_yyyymmdd_hhiiss.*
         name = pre+timeStr+suf
+        # 判断是否存在
+        i = 1
+        while os.path.exists(name):
+            name = pre+timeStr+'_'+str(i)+suf
+            i = i + 1
         print('>>>', name)
         # 重命名
         os.rename(f,os.path.join(os.path.dirname(f),name))
